@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Instala el controlador NVIDIA abierto si la placa es compatible (Turing o más nueva: GTX 16 / RTX).
+set -uo pipefail
+t="Controladores NVIDIA"
+msg() { kdialog --title "$t" --msgbox "$1"; }
+mapfile -t placas < <(lspci -d 10de: | grep -E 'VGA|3D|Display')
+(( ${#placas[@]} )) || { msg "No hay ninguna placa NVIDIA en este equipo. No hace falta instalar nada."; exit 0; }
+nombre="$(printf '%s\n' "${placas[@]}" | sed 's/.*NVIDIA Corporation //')"
+[[ -d /run/archiso ]] && { msg "Placa detectada:\n$nombre\n\nEstás en modo de prueba. Instala Maospix y vuelve a abrir esto."; exit 0; }
+pacman -Q nvidia-open >/dev/null 2>&1 && { msg "El controlador NVIDIA ya está instalado.\n\n$nombre"; exit 0; }
+pacman -Qq | grep -qE '^nvidia.*(-dkms|-lts|[0-9]xx)' && { msg "Ya tienes otro controlador NVIDIA instalado; no cambio nada."; exit 0; }
+# TU=GTX 16/RTX 20, GA=RTX 30, AD=RTX 40, GB=RTX 50, GH=Hopper. Todas las placas deben ser compatibles.
+viejas="$(printf '%s\n' "${placas[@]}" | grep -vE 'NVIDIA Corporation (TU1|GA10|AD10|GB20|GH10)')"
+if [[ -n "$viejas" ]]; then
+    msg "Placa detectada:\n$nombre\n\nNo es una GTX 16 / RTX o más nueva (o no la reconozco), y el controlador oficial de Arch ya no soporta placas anteriores. Dejo el controlador libre (nouveau), que ya funciona.\n\nPara GTX 900 y 10 existe nvidia-580xx-dkms en el AUR; instálalo solo si sabes revertirlo."
+    exit 0
+fi
+kdialog --title "$t" --yesno "Placa detectada:\n$nombre\n\nSe actualizará el sistema y se instalará nvidia-open (más de 300 MB). Requiere internet y tu contraseña, y después hay que reiniciar.\n\n¿Continuar?" || exit 0
+pk="nvidia-open nvidia-utils nvidia-settings"
+(( $(lspci | grep -cE 'VGA|3D controller|Display controller') > ${#placas[@]} )) && pk+=" nvidia-prime"   # portátil híbrido
+exec konsole -e bash -c "if sudo pacman -Syu --needed $pk && sudo mkinitcpio -P; then echo; echo 'Listo. Reinicia el equipo.'; else echo; echo 'No se completó; revisa el mensaje de arriba.'; fi; read -rp 'Enter para cerrar '"

@@ -1,0 +1,30 @@
+desktop-image: "background.png"
+desktop-color: "#0f1524"
+title-text: ""
+message-color: "#b4c0dc"
+terminal-font: "Maospix 16 Regular 16"
++ boot_menu {
+  left = 25%
+  top = 48%
+  width = 50%
+  height = 36%
+  item_font = "Maospix 22 Regular 22"
+  item_color = "#b4c0dc"
+  selected_item_font = "Maospix 22 Regular 22"
+  selected_item_color = "#4fd8e8"
+  selected_item_pixmap_style = "sel_*.png"
+  item_height = 44
+  item_padding = 18
+  item_spacing = 8
+}
++ progress_bar {
+  id = "__timeout__"
+  left = 35%
+  top = 90%
+  width = 30%
+  height = 6
+  fg_color = "#4fd8e8"
+  bg_color = "#1f2a42"
+  border_color = "#1f2a42"
+  text = ""
+}

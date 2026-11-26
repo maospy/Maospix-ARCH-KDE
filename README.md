@@ -1,71 +1,89 @@
-# Maospix-KDE
+# Maospix-ARCH-KDE
 
-Distro propia basada en **Arch Linux + KDE Plasma**, con instalador gráfico (Calamares), tema oscuro Nord y todo preinstalado. Parte de la familia maospix, creada por Marcos Olmedo (maospy), Itauguá, Paraguay.
+Distro propia basada en **Arch Linux + KDE Plasma 6.8**, con el estilo de Garuda Mokka en los colores de Maospix (azul noche, cian y violeta), ventanas en mosaico al estilo COSMIC e instalador gráfico sin conexión. Parte de la familia maospix, creada por Marcos Olmedo (maospy), Itauguá, Paraguay.
 
-![Escritorio de Maospix-KDE](docs/screenshots/escritorio.png)
+![Estilo Mokka](docs/capturas/mokka.png)
+
+## Dos estilos
+
+- **Mokka** (por defecto): barra superior con islas, dock a la izquierda, íconos Tela Circle, Kvantum y Aurorae recoloreados.
+- **Caelestia**: shell de [Caelestia](https://github.com/caelestia-kde/caelestia) con reloj grande y lanzador propio.
+
+Se cambia desde el menú con **Estilo Mokka** / **Estilo Caelestia** (o `maospix-estilo mokka|caelestia`). El fondo y los atajos se conservan al ir y volver.
+
+![Estilo Caelestia](docs/capturas/caelestia.png)
+
+![Lanzador de Caelestia](docs/capturas/lanzador.png)
 
 ## Qué incluye
 
-- **KDE Plasma** (Wayland) con tema propio: barra superior flotante y dock vertical a la izquierda.
-- **Instalador Calamares** en español, con Btrfs por defecto.
-- **Btrfs con snapshots automáticos:** snapper + snap-pac (snapshot antes y después de cada actualización) y grub-btrfs (arrancar desde un snapshot desde el menú de GRUB).
-- **zram** como swap comprimida en RAM.
-- **Ghostty** como terminal con **fish** como shell, y **fastfetch** con el logo del gatito. **yay** viene preinstalado para el AUR.
-- **Brave** como navegador, **Discover** con **Flatpak/Flathub** como tienda.
-- **Maospix Hello:** bienvenida en el primer inicio (actualizar, tienda, instalar NVIDIA, configuración).
-- Wallpapers propios y SDDM tematizado.
+- **Mosaico automático** con [Krohnkite](https://codeberg.org/anametologin/Krohnkite): las ventanas se acomodan solas; Super+Y lo enciende o apaga en cada escritorio.
+- **kitty** como terminal (Super+T) con **fish** y **fastfetch** con el logo del gatito. Konsole queda de respaldo.
+- Botones de ventana a la derecha, como en Windows (— ▢ ✕).
+- **yay**, **paru** y **base-devel** para el AUR; **Discover** con Flatpak.
+- **Brave**, Dolphin, Kate, Okular, Gwenview, VLC, Ark, Spectacle.
+- **Btrfs con snapshots** (snapper + grub-btrfs), **zram**, Plymouth y SDDM tematizados.
+- **Ayudante NVIDIA** (solo GPUs Turing / GTX 16 o más nuevas) y **cortafuegos gráfico** (ufw, apagado por defecto).
+- Sesión limpia: al entrar no se reabren las ventanas ni las pestañas de Dolphin.
+- Cuatro fondos neón retro propios, además de los clásicos.
+
+![Bienvenida](docs/capturas/bienvenida.png)
+
+![kitty con fastfetch](docs/capturas/kitty.png)
+
+![Fondos neón](docs/capturas/fondos-neon.jpg)
+
+## Atajos principales
+
+| Atajo | Acción |
+|---|---|
+| Super + T | Terminal |
+| Super + Y | Mosaico o flotante |
+| Super + G | Flotar esta ventana |
+| Super + flechas | Cambiar de ventana |
+| Super + Shift + flechas | Mover la ventana |
+| Super + Ctrl + flechas | Cambiar el tamaño |
+| Super + M | Maximizar |
+| Super + Q | Cerrar |
+| Super + 1 a 4 | Ir al escritorio |
+| Super + Shift + 1 a 4 | Enviar al escritorio |
 
 ## Instalar
 
-1. Descargá la ISO (3 GB) desde [SourceForge](https://sourceforge.net/projects/maospy-kde/files/maospix-kde-2026.10.26-x86_64.iso/download) y verificá el checksum:
+1. Descargá la ISO (3,3 GB) desde [SourceForge](https://sourceforge.net/projects/maospy-kde/files/maospix-arch-kde-2026.11.25-x86_64.iso/download) y verificá el checksum:
 
 ```
-sha256sum maospix-kde-2026.10.26-x86_64.iso
-3abc2a34066c54745ed27afca1e6bc62e22cd407ba93d07e811c2c61f8df7873
+sha256sum maospix-arch-kde-2026.11.25-x86_64.iso
+1b40841f188d6e6114d1b2bb5411963fc8bda297834135e9ff14ae5c7bc2c609
 ```
 
-2. Grabala en un pendrive (Ventoy, `dd` o Balena Etcher) o usala en una VM con **EFI activado**.
-3. Arrancá el live y abrí "Instalar Maospix-KDE".
+2. Grabala en un pendrive (Ventoy, `dd` o Balena Etcher). Arranca en **BIOS y UEFI**.
+3. En el live abrí "Instalar Maospix-ARCH-KDE". No necesita internet.
 
-![Instalador Calamares](docs/screenshots/instalador.png)
+Requisitos: 4 GB de RAM o más y 30 GB de disco.
 
-Requisitos: PC con UEFI, 4 GB de RAM o más y 30 GB de disco.
-
-En VirtualBox: Linux / Arch Linux 64-bit, EFI activado, video 128 MB, controlador gráfico **VMSVGA**, sin aceleración 3D. Con menos memoria de video el escritorio se congela. El portapapeles compartido no funciona porque Plasma 6.8 es solo Wayland.
-
-Ghostty necesita OpenGL 4.3: en VirtualBox no está disponible, y Maospix usa renderizado por software y, si falla, Konsole.
+**Si venís de Maospix-KDE (Nord):** esta versión no se actualiza encima de la anterior; hay que reinstalar. La versión vieja queda en la rama [`nord-v1`](../../tree/nord-v1) y la etiqueta `v1.0`.
 
 ## Construir la ISO
 
-Requiere un Arch Linux con `archiso` instalado.
+Requiere Arch Linux con `archiso`, `arch-install-scripts` y subuid/subgid configurados. No hace falta root.
 
 ```
-git clone https://github.com/maospy/Maospix-KDE
-cd Maospix-KDE
+git clone https://github.com/maospy/Maospix-ARCH-KDE
+cd Maospix-ARCH-KDE
+./tools/crear-chroot.sh        # entorno aislado para compilar
+./tools/build-packages.sh      # paquetes propios y de AUR -> repo/x86_64
+./tools/build-iso.sh 1         # ISO en out/
+./tools/progreso.sh            # avance (en otra terminal)
 ```
-
-Los paquetes de AUR (calamares, brave-bin, cliamp-bin) se construyen con `makepkg` a partir de los PKGBUILD de `pkgbuilds/` y se dejan en `repo/` (repositorio `[maospix-local]`). Después:
-
-```
-sudo mkarchiso -v -w ~/archiso-work -o out archiso
-```
-
-Se recomienda correrlo dentro de `tmux`. En un equipo con HDD y 2 núcleos tarda bastante por la compresión xz.
 
 ## Estructura
 
-- `archiso/`: perfil archiso (paquetes, permisos, airootfs con toda la configuración).
-- `archiso/airootfs/etc/calamares/`: configuración del instalador.
-- `archiso/airootfs/usr/local/bin/`: scripts propios (postinstall, postboot, Hello, terminal, NVIDIA).
-- `pkgbuilds/`: PKGBUILD de los paquetes de AUR.
-- `docs/HISTORIA.md`: historia de construcción, problemas y soluciones.
+- `archiso/`: perfil archiso (lista de paquetes, instalador Calamares, live).
+- `packages/`: PKGBUILD de los paquetes propios (`maospix-arch-kde-theme`, `maospix-arch-kde-settings`, `maospix-plymouth-theme`) y de los de AUR.
+- `tools/`: construcción, pruebas en QEMU y generadores (fondos, botones, recoloreado de Mokka).
+- `upstream/UPSTREAM.lock`: versiones exactas de los proyectos externos.
 
-## Notas
+## Créditos y licencia
 
-- NVIDIA no viene preinstalado (para no romper `nouveau` en tarjetas viejas). Usá el botón en Maospix Hello.
-- `/boot` es la partición EFI (FAT32): GRUB no logró leer el kernel desde este Btrfs. Los snapshots no incluyen el kernel.
-- Los wallpapers y la fuente Orbitron (licencia OFL) se generaron para este proyecto.
-
-## Licencia
-
-[GPL-3.0](LICENSE). El software incluido conserva sus licencias originales (por ejemplo, el tema Nordic GTK es GPL-3.0).
+[GPL-3.0](LICENSE). Basado en el trabajo de Garuda Linux (Mokka), Catppuccin, Krohnkite, Caelestia, Tela Circle y otros: ver [THIRD_PARTY.md](THIRD_PARTY.md). Cada componente conserva su licencia original.

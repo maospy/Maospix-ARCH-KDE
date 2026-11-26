@@ -1,0 +1,17 @@
+{
+    "KPackageStructure": "Plasma/LayoutTemplate",
+    "KPlugin": {
+        "Id": "org.maospix.desktop.defaultPanel",
+        "Name": "Maospix Panel superior",
+        "License": "GPL-3.0",
+        "Authors": [
+            {
+                "Name": "MAOSPIX, Garuda Linux"
+            }
+        ]
+    },
+    "X-Plasma-ContainmentCategories": [
+        "panel"
+    ],
+    "X-Plasma-Shell": "plasmashell"
+}

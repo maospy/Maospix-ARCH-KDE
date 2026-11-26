@@ -1,0 +1,6 @@
+01-magic-lamp
+02-krohnkite-setup
+04-stale-font-families
+05-matugen
+07-export-plasma-config
+08-skwd-wall-hook

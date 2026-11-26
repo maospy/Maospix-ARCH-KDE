@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+# Cambia el estilo del escritorio: maospix-estilo mokka|caelestia
+# Mokka = paneles de Plasma. Caelestia = shell de quickshell; plasmashell sigue para el fondo.
+set -uo pipefail
+cfg="${XDG_CONFIG_HOME:-$HOME/.config}"; st="${XDG_STATE_HOME:-$HOME/.local/state}/maospix-estilo"
+applets="$cfg/plasma-org.kde.plasma.desktop-appletsrc"; tareas="$HOME/.local/share/caelestia/state/startup_tasks.txt"
+mkdir -p "$st"; actual="$(cat "$st/actual" 2>/dev/null || echo mokka)"
+# En segundo plano y con límite: notify-send se cuelga si el servidor de avisos está cambiando.
+aviso() { ( sleep 2; timeout 8 notify-send -i maospix "Estilo Maospix" "$1" ) >/dev/null 2>&1 9>&- & disown; }
+lanzador_super() {   # Meta y Alt+F1 para el lanzador de Plasma, si Caelestia no los devolvió
+    local v; v="$(kreadconfig6 --file kglobalshortcutsrc --group plasmashell --key 'activate application launcher')"
+    [[ "$v" == *Meta* && "$v" != none,* ]] && return 0
+    gdbus call --session --dest org.kde.kglobalaccel --object-path /kglobalaccel --method org.kde.KGlobalAccel.setForeignShortcut \
+        "['plasmashell','activate application launcher','plasmashell','activate application launcher']" "[$((0x11000022)), $((0x09000030))]" >/dev/null 2>&1
+}
+js() { qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript "$1"; }
+parar_plasma() { systemctl --user stop plasma-plasmashell.service 2>/dev/null; kquitapp6 plasmashell 2>/dev/null; for _ in {1..20}; do pgrep -x plasmashell >/dev/null || return; sleep 0.3; done; pkill -x plasmashell; }
+abrir_plasma() { systemctl --user start plasma-plasmashell.service 2>/dev/null; for _ in {1..40}; do js 'print(1)' >/dev/null 2>&1 && return 0; sleep 0.5; done; return 1; }
+
+camino="${XDG_STATE_HOME:-$HOME/.local/state}/caelestia/wallpaper/path.txt"
+FABRICA=/usr/share/wallpapers/Maospix; HORIZONTE=/usr/share/wallpapers/Maospix-Neon-Horizonte
+# ¿El archivo $1 perdió ajustes respecto de $2? (mismos widgets, pero menos del 92 % de las opciones)
+degradado() {
+    [[ -s "$1" && -s "$2" ]] || return 1
+    [[ "$(grep '^plugin=' "$1" | sort)" == "$(grep '^plugin=' "$2" | sort)" ]] || return 1
+    (( $(grep -c = "$1") * 100 < $(grep -c = "$2") * 92 ))
+}
+fondo_kde() {   # imagen del fondo de KDE (vacío si usa otro complemento, por ejemplo pase de diapositivas)
+    local v
+    # Plasma guarda su archivo con retraso: vale lo que responde en vivo; el archivo es el respaldo.
+    if v="$(timeout 5 qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript 'var r="";desktops().forEach(function(d){if(d.wallpaperPlugin!="org.kde.image"||(r!=""&&d.screen!=0))return;d.currentConfigGroup=["Wallpaper","org.kde.image","General"];r=""+d.readConfig("Image")});print(r)' 2>/dev/null)"; then
+        v="${v%%$'\n'*}"
+    else
+        v="$(awk '
+        /^\[Containments\]\[[0-9]+\]/ { split($0,a,/[][]+/); id=a[3] }
+        /^\[/ { sec=$0; raiz=(sec ~ /^\[Containments\]\[[0-9]+\]$/); img=(sec ~ /\]\[Wallpaper\]\[org\.kde\.image\]\[General\]$/) }
+        raiz && /^lastScreen=/ { split($0,b,"="); pant[id]=b[2] }
+        raiz && /^wallpaperplugin=/ { sub(/^[^=]*=/,""); plug[id]=$0 }
+        img && /^Image=/ { sub(/^Image=/,""); ima[id]=$0; if (!(id in orden)) { orden[id]=++n; ids[n]=id } }
+        END { for (i=1;i<=n;i++) { k=ids[i]; if (plug[k]!="" && plug[k]!="org.kde.image") continue
+              if (pant[k]=="0") { print ima[k]; exit } if (otro=="") otro=ima[k] } print otro }' "$applets" 2>/dev/null | head -1)"
+    fi
+    v="${v#file://}"; v="${v%/}"
+    [[ "$v" == *%* ]] && v="$(printf '%b' "${v//%/\\x}")"
+    if [[ -d "$v/contents/images" ]]; then v="$(find "$v/contents/images" -maxdepth 1 -type f | sort -V | tail -1)"; fi
+    if [[ -f "$v" ]]; then printf '%s' "$v"; fi
+}
+copiar_fondo() {   # KDE -> Caelestia; solo escribe si cambió, para no entrar en bucle
+    local f antes; antes="$(cat "$camino" 2>/dev/null)"; f="$(fondo_kde)"
+    [[ -n "$f" && "$f" != "$antes" ]] || return 0
+    if [[ "${1:-}" == espera ]]; then   # si justo se está eligiendo otro en Caelestia, no pisarlo
+        sleep 2
+        [[ "$(cat "$camino" 2>/dev/null)" == "$antes" && "$(fondo_kde)" == "$f" ]] || return 0
+    fi
+    mkdir -p "${camino%/*}"; printf '%s' "$f" > "$camino.maospix" && mv -f "$camino.maospix" "$camino"   # de una vez: Caelestia no debe leerlo vacío
+}
+preparar_caelestia() {   # una vez por usuario: KDE maneja el fondo y no hay carpetas sueltas en el escritorio
+    local j="$cfg/caelestia/shell.json" d i f tmp
+    d="$(xdg-user-dir PICTURES 2>/dev/null)"; [[ -n "$d" && "$d" != "$HOME" ]] || d="$HOME/Pictures"; d="$d/Fondos"
+    [[ -f "$j" ]] || return 0; [[ -z "$(jq -r '.paths.wallpaperDir // empty' "$j" 2>/dev/null)" ]] || return 0
+    mkdir -p "$d"
+    for i in /usr/share/wallpapers/Maospix*/; do
+        f="$(find "$i/contents/images" -maxdepth 1 -type f 2>/dev/null | sort -V | tail -1)"; [[ -n "$f" ]] || continue
+        i="${i%/}"; [[ -e "$d/${i##*/}.${f##*.}" ]] || ln -s "$f" "$d/${i##*/}.${f##*.}"
+    done
+    tmp="$(mktemp)"
+    jq --arg d "$d" '.background += {wallpaperEngine:"skwd/plasma",wallpaperEnabled:false,desktopIconsEnabled:false}
+        | .paths = ((.paths // {}) + {wallpaperDir:$d})' "$j" > "$tmp" && cat "$tmp" > "$j"
+    rm -f "$tmp"
+}
+
+case "${1:-}" in fondo) copiar_fondo "${2:-}"; exit 0 ;; esac   # lo llama systemd; sin candado
+
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/maospix-estilo.lock"; flock -n 9 || exit 0
+
+case "${1:-}" in
+caelestia)
+    [[ "$actual" == caelestia ]] && { systemctl --user start caelestia-shell.service 9>&-; exit 0; }
+    command -v quickshell >/dev/null && [[ -f /usr/lib/systemd/user/caelestia-shell.service ]] || { aviso "Caelestia no está instalado."; exit 1; }
+    timeout 40 /usr/lib/maospix/atajos guardar "$st/atajos.mokka" 2>/dev/null   # Caelestia no devuelve los que toma
+    cp -f "$applets" "$st/appletsrc.antes" 2>/dev/null
+    parar_plasma   # al cerrarse guarda en disco paneles y grosores
+    bueno="$applets"
+    if degradado "$applets" "$st/appletsrc.antes"; then bueno="$st/appletsrc.antes"; fi     # Plasma lo dejó a medias al cerrarse
+    if degradado "$bueno" "$st/appletsrc.mokka"; then bueno="$st/appletsrc.mokka"; fi       # o ya venía dañado: vale la copia anterior
+    [[ "$bueno" == "$st/appletsrc.mokka" ]] || cp -f "$bueno" "$st/appletsrc.mokka" || { aviso "No se pudo guardar el estilo Mokka; no cambié nada."; abrir_plasma; exit 1; }
+    cp -f "$cfg/plasmashellrc" "$st/plasmashellrc.mokka" 2>/dev/null   # grosor y posición de los paneles
+    abrir_plasma
+    # En un usuario creado sin /etc/skel nuevo, trae la configuración Maospix de Caelestia.
+    for f in .config/caelestia/shell.json .config/caelestia/cli.json .config/caelestia/keybinds.json .local/state/caelestia/whatsnew.json .local/share/caelestia/state/startup_tasks.txt; do
+        [[ -e "$HOME/$f" || ! -e "/etc/skel/$f" ]] || install -Dm644 "/etc/skel/$f" "$HOME/$f"
+    done
+    [[ -f "$tareas" ]] && sed -i '/^0[36]-/d' "$tareas"
+    caelestia scheme set -n maospix -f default -m dark >/dev/null 2>&1
+    # Con el fondo de fábrica, Caelestia estrena el suyo (Horizonte); si ya elegiste otro, se respeta.
+    if [[ "$(fondo_kde)" == "$FABRICA"/* && -d "$HORIZONTE" ]]; then plasma-apply-wallpaperimage "$HORIZONTE" >/dev/null 2>&1; fi
+    preparar_caelestia; copiar_fondo
+    caelestia scheme set -n maospix -f default -m dark >"$st/esquema.log" 2>&1 || aviso "Caelestia no pudo aplicar los colores Maospix."
+    js 'panels().forEach(p => p.remove())' >/dev/null 2>&1
+    systemctl --user enable caelestia-shell.service >/dev/null 2>&1
+    if ! systemctl --user restart caelestia-shell.service || { sleep 6; ! systemctl --user is-active -q caelestia-shell.service; }; then
+        echo caelestia > "$st/actual"; flock -u 9; aviso "Caelestia no arrancó; vuelvo a Mokka."; exec "$0" mokka
+    fi
+    echo caelestia > "$st/actual"; aviso "Estilo Caelestia activo." ;;
+mokka)
+    systemctl --user disable caelestia-shell.service >/dev/null 2>&1
+    systemctl --user stop caelestia-shell.service 2>/dev/null   # al salir devuelve los atajos que tomó
+    [[ "$actual" == mokka ]] && exit 0
+    fondo="$(fondo_kde)"   # el fondo elegido en Caelestia sigue en Mokka
+    parar_plasma
+    if [[ -s "$st/appletsrc.mokka" ]]; then cp -f "$st/appletsrc.mokka" "$applets"; else rm -f "$applets"; fi
+    [[ -s "$st/plasmashellrc.mokka" ]] && cp -f "$st/plasmashellrc.mokka" "$cfg/plasmashellrc"
+    kwriteconfig6 --file plasmashellrc --group Shell --key ShellPackage --delete 2>/dev/null
+    plasma-apply-colorscheme Maospix >/dev/null 2>&1
+    abrir_plasma || { aviso "Plasma tardó en abrir; cierra y vuelve a entrar."; }
+    sleep 2; lanzador_super
+    [[ -s "$st/atajos.mokka" ]] && timeout 60 /usr/lib/maospix/atajos devolver "$st/atajos.mokka" > "$st/atajos.log" 2>&1
+    viejo="$(fondo_kde)"
+    if [[ "$fondo" == "$HORIZONTE"/* && "$viejo" == "$FABRICA"/* ]]; then :   # cada estilo con el suyo de fábrica
+    elif [[ -n "$fondo" && -n "$viejo" && "$fondo" != "$viejo" ]]; then plasma-apply-wallpaperimage "$fondo" >/dev/null 2>&1; fi
+    if degradado "$applets" "$st/appletsrc.mokka"; then   # una segunda oportunidad
+        parar_plasma; cp -f "$st/appletsrc.mokka" "$applets"; abrir_plasma
+    fi
+    echo mokka > "$st/actual"; aviso "Estilo Mokka activo." ;;
+estado) echo "$actual" ;;
+*) echo "Uso: maospix-estilo mokka|caelestia|estado" >&2; exit 2 ;;
+esac

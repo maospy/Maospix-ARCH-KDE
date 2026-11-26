@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "FGD"
+            }
+        ],
+        "Category": "Plasma Theme",
+        "Description": "A modern theme for Plasma 6 based on Utterly-Round",
+        "EnabledByDefault": true,
+        "Id": "Maospix",
+        "License": "CC BY-SA 4.0",
+        "Name": "Maospix",
+        "Version": "1.0.0"
+    },
+    "X-KDE-PluginInfo-Id": "Maospix",
+    "X-Plasma-API": "5.0"
+}

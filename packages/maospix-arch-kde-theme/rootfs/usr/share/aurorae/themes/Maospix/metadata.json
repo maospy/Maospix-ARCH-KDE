@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Description": "Soothing Pastel theme for Kwin",
+        "Id": "Maospix",
+        "License": "MIT",
+        "Name": "Maospix",
+        "Version": "0.4.0"
+    }
+}

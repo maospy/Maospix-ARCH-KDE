@@ -1,0 +1,9 @@
+{
+    "KPlugin": {
+        "Authors": [{"Name": "Marcos Olmedo (maospytek)"}],
+        "Id": "Maospix-Gatito",
+        "License": "CC-BY-SA-4.0",
+        "Name": "Maospix Gatito",
+        "Name[es]": "Maospix-Gatito"
+    }
+}

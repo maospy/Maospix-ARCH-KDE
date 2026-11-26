@@ -1,0 +1,20 @@
+{
+  "theme": {
+    "enableKde": false,
+    "enableKvantum": false,
+    "enableQt": false,
+    "enableGtk": false,
+    "enableTerm": false,
+    "enableBtop": true,
+    "enableCava": false,
+    "enableDiscord": false,
+    "enableSpicetify": false,
+    "enableZed": false,
+    "enableFuzzel": false,
+    "enableVscode": false,
+    "enableRofi": false,
+    "enableFoot": false,
+    "enableKitty": false,
+    "enableStarship": false
+  }
+}

@@ -1,0 +1,5 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": { "Id": "org.maospix.tablero", "Name": "Tablero Maospix", "Description": "Reloj y tablero: calendario, música, recursos, sesión y atajos (inspirado en Caelestia)", "Icon": "maospix", "License": "GPL-3.0", "Category": "Date and Time", "Authors": [{ "Name": "MAOSPIX" }] },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

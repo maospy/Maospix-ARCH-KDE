@@ -1,0 +1,17 @@
+{
+    "KPackageStructure": "Plasma/LayoutTemplate",
+    "KPlugin": {
+        "Id": "org.maospix.desktop.defaultDock",
+        "Name": "Maospix Dock inferior",
+        "License": "GPL-3.0",
+        "Authors": [
+            {
+                "Name": "MAOSPIX, Garuda Linux"
+            }
+        ]
+    },
+    "X-Plasma-ContainmentCategories": [
+        "panel"
+    ],
+    "X-Plasma-Shell": "plasmashell"
+}

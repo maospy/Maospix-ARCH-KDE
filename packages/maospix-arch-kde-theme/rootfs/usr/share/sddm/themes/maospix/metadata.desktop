@@ -1,0 +1,12 @@
+[SddmGreeterTheme]
+Name=Maospix
+Description=Pantalla de acceso de Maospix-ARCH-KDE
+Author=MAOSPIX
+License=GPL-3.0
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=maospix
+Theme-API=2.0
+QtVersion=6

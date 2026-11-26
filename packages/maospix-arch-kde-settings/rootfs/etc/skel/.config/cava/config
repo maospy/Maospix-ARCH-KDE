@@ -1,0 +1,11 @@
+[general]
+bars = 0
+bar_width = 3
+bar_spacing = 1
+
+[color]
+gradient = 1
+gradient_count = 3
+gradient_color_1 = '#4fd8e8'
+gradient_color_2 = '#88a8d8'
+gradient_color_3 = '#b393f5'

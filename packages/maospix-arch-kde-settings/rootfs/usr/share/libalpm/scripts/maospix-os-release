@@ -1,0 +1,6 @@
+#!/bin/sh
+# Maospix-ARCH-KDE: el paquete filesystem de Arch trae /usr/lib/os-release con
+# "Arch Linux"; se reemplaza por la identidad de Maospix-ARCH-KDE (ID_LIKE=arch).
+src=/usr/share/maospix-arch-kde/os-release
+[ -r "$src" ] || exit 0
+cmp -s "$src" /usr/lib/os-release || install -m644 "$src" /usr/lib/os-release

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Cortafuegos
+Comment=Activar y configurar el cortafuegos
+Exec=systemsettings kcm_firewall
+Icon=security-high
+Categories=System;Settings;
+OnlyShowIn=KDE;

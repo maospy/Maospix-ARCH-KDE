@@ -1,0 +1,19 @@
+pkgname=maospix-arch-kde-settings
+pkgver=0.8.0
+pkgrel=1
+pkgdesc='Configuración MAOSPIX para Plasma: Krohnkite estilo COSMIC, atajos y estilo'
+arch=(any)
+url='https://github.com/maospy'
+license=('GPL-3.0-only' 'MIT')
+depends=(maospix-arch-kde-theme kwin sddm kwallet-pam jq kdialog python kitty konsole pciutils xdg-user-dirs qt6-declarative libksysguard plasma5support fastfetch)
+install=maospix-arch-kde-settings.install
+optdepends=('caelestia-kde: estilo Caelestia' 'plasma-firewall: cortafuegos gráfico')
+conflicts=(kwin-scripts-krohnkite)
+noextract=('krohnkite-0.9.11.0.kwinscript')
+source=('krohnkite-0.9.11.0.kwinscript')
+sha256sums=('1a8d99bf55dbf30d3af704ba7951a895aeee1d16e7da5a7bfe1d2db8215f6fa7')
+package() {
+  install -d "$pkgdir/usr/share/kwin/scripts/krohnkite"
+  bsdtar -xf "$srcdir/krohnkite-0.9.11.0.kwinscript" -C "$pkgdir/usr/share/kwin/scripts/krohnkite"
+  cp -a "$startdir/rootfs/." "$pkgdir/"
+}

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Bienvenida Maospix
+Comment=Guía de atajos del mosaico
+Exec=maospix-bienvenida
+Icon=maospix
+Categories=System;

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": { "type": "file-raw", "source": "/usr/share/maospix-arch-kde/fastfetch/logo.ansi", "padding": { "top": 1, "left": 1, "right": 3 } },
+  "display": { "separator": "  ", "color": { "keys": "38;2;79;216;232", "title": "38;2;179;147;245" } },
+  "modules": [
+    { "type": "title", "color": { "user": "38;2;79;216;232", "at": "38;2;180;192;220", "host": "38;2;179;147;245" } },
+    { "type": "custom", "format": "\u001b[38;2;58;72;104m╭─ Sistema ───────────────────────────" },
+    { "type": "os", "key": "│ \uf303  OS       " },
+    { "type": "kernel", "key": "│ \uf17c  Kernel   " },
+    { "type": "packages", "key": "│ \uf487  Paquetes " },
+    { "type": "uptime", "key": "│ \uf017  Activo   " },
+    { "type": "custom", "format": "\u001b[38;2;58;72;104m├─ Escritorio ────────────────────────" },
+    { "type": "de", "key": "│ \uf108  Plasma   ", "keyColor": "38;2;179;147;245" },
+    { "type": "wm", "key": "│ \uf2d0  KWin     ", "keyColor": "38;2;179;147;245" },
+    { "type": "terminal", "key": "│ \uf120  Terminal ", "keyColor": "38;2;179;147;245" },
+    { "type": "shell", "key": "│ \uf489  Shell    ", "keyColor": "38;2;179;147;245" },
+    { "type": "custom", "format": "\u001b[38;2;58;72;104m├─ Equipo ────────────────────────────" },
+    { "type": "cpu", "key": "│ \uf4bc  CPU      ", "keyColor": "38;2;214;140;245" },
+    { "type": "gpu", "key": "│ \uf26c  GPU      ", "keyColor": "38;2;214;140;245" },
+    { "type": "memory", "key": "│ \uf2db  RAM      ", "keyColor": "38;2;214;140;245" },
+    { "type": "disk", "key": "│ \uf0a0  Disco    ", "folders": "/", "keyColor": "38;2;214;140;245" },
+    { "type": "custom", "format": "\u001b[38;2;58;72;104m╰─────────────────────────────────────" },
+    { "type": "colors", "symbol": "circle", "paddingLeft": 2 }
+  ]
+}

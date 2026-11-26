@@ -1,0 +1,8 @@
+#!/bin/sh
+# Guía de atajos. Con --inicio se muestra solo la primera vez.
+m="${XDG_STATE_HOME:-$HOME/.local/state}/maospix-bienvenida"
+if [ "$1" = --inicio ]; then
+    [ -e "$m" ] && exit 0
+    mkdir -p "${m%/*}"; : > "$m"; sleep 4
+fi
+exec /usr/lib/qt6/bin/qml /usr/share/maospix-arch-kde/bienvenida/Main.qml

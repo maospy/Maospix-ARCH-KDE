@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Maospix Hello
-Exec=maospix-hello --autostart
-Icon=start-here-kde
-OnlyShowIn=KDE;
-X-KDE-autostart-after=panel

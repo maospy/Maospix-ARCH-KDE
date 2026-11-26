@@ -1,0 +1,140 @@
+[General]
+ColorScheme=Maospix
+TerminalApplication=kitty
+TerminalService=kitty.desktop
+font=Inter,10,-1,5,75,0,0,0,0,0,Bold
+fixed=JetBrainsMono Nerd Font,10,-1,5,75,0,0,0,0,0,Bold
+menuFont=Inter,10,-1,5,75,0,0,0,0,0,Bold
+smallestReadableFont=Inter,8,-1,5,75,0,0,0,0,0,Bold
+toolBarFont=Inter,10,-1,5,75,0,0,0,0,0,Bold
+
+[Icons]
+Theme=Tela-circle-dracula-dark
+
+[KDE]
+LookAndFeelPackage=org.maospix.desktop
+ShowDeleteCommand=true
+SingleClick=true
+widgetStyle=kvantum-dark
+
+[WM]
+activeFont=Inter,10,-1,5,75,0,0,0,0,0,Bold
+
+[ColorEffects:Disabled]
+Color=15, 21, 36
+ColorAmount=0.30000000000000004
+ColorEffect=2
+ContrastAmount=0.1
+ContrastEffect=0
+IntensityAmount=-1
+IntensityEffect=0
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=true
+Color=15, 21, 36
+ColorAmount=0.5
+ColorEffect=3
+ContrastAmount=0
+ContrastEffect=0
+Enable=true
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Button]
+BackgroundAlternate=79,216,232
+BackgroundNormal=31,42,66
+DecorationFocus=79,216,232
+DecorationHover=179,147,245
+ForegroundActive=245, 176, 138
+ForegroundInactive=180, 192, 220
+ForegroundLink=79,216,232
+ForegroundNegative=242, 135, 143
+ForegroundNeutral=240, 213, 138
+ForegroundNormal=230, 236, 255
+ForegroundPositive=143, 214, 160
+ForegroundVisited=79, 216, 232
+
+[Colors:Complementary]
+BackgroundAlternate=15,21,36
+BackgroundNormal=15,21,36
+DecorationFocus=79,216,232
+DecorationHover=31, 42, 66
+ForegroundActive=245, 176, 138
+ForegroundInactive=180, 192, 220
+ForegroundLink=79,216,232
+ForegroundNegative=242, 135, 143
+ForegroundNeutral=240, 213, 138
+ForegroundNormal=230, 236, 255
+ForegroundPositive=143, 214, 160
+ForegroundVisited=79, 216, 232
+
+[Colors:Header]
+BackgroundAlternate=15,21,36
+BackgroundNormal=15,21,36
+DecorationFocus=79,216,232
+DecorationHover=31, 42, 66
+ForegroundActive=245, 176, 138
+ForegroundInactive=180, 192, 220
+ForegroundLink=79,216,232
+ForegroundNegative=242, 135, 143
+ForegroundNeutral=240, 213, 138
+ForegroundNormal=230, 236, 255
+ForegroundPositive=143, 214, 160
+ForegroundVisited=79, 216, 232
+
+[Colors:Selection]
+BackgroundAlternate=79,216,232
+BackgroundNormal=79,216,232
+DecorationFocus=79,216,232
+DecorationHover=179,147,245
+ForegroundActive=245, 176, 138
+ForegroundInactive=10, 15, 26
+ForegroundLink=79,216,232
+ForegroundNegative=242, 135, 143
+ForegroundNeutral=240, 213, 138
+ForegroundNormal=15,21,36
+ForegroundPositive=143, 214, 160
+ForegroundVisited=79, 216, 232
+
+[Colors:Tooltip]
+BackgroundAlternate=27,25,35
+BackgroundNormal=15, 21, 36
+DecorationFocus=79,216,232
+DecorationHover=179,147,245
+ForegroundActive=245, 176, 138
+ForegroundInactive=180, 192, 220
+ForegroundLink=79,216,232
+ForegroundNegative=242, 135, 143
+ForegroundNeutral=240, 213, 138
+ForegroundNormal=230, 236, 255
+ForegroundPositive=143, 214, 160
+ForegroundVisited=79, 216, 232
+
+[Colors:View]
+BackgroundAlternate=15,21,36
+BackgroundNormal=15, 21, 36
+DecorationFocus=79,216,232
+DecorationHover=179,147,245
+ForegroundActive=245, 176, 138
+ForegroundInactive=180, 192, 220
+ForegroundLink=79,216,232
+ForegroundNegative=242, 135, 143
+ForegroundNeutral=240, 213, 138
+ForegroundNormal=230, 236, 255
+ForegroundPositive=143, 214, 160
+ForegroundVisited=79, 216, 232
+
+[Colors:Window]
+BackgroundAlternate=15,21,36
+BackgroundNormal=15,21,36
+DecorationFocus=79,216,232
+DecorationHover=179,147,245
+ForegroundActive=245, 176, 138
+ForegroundInactive=180, 192, 220
+ForegroundLink=79,216,232
+ForegroundNegative=242, 135, 143
+ForegroundNeutral=240, 213, 138
+ForegroundNormal=230, 236, 255
+ForegroundPositive=143, 214, 160
+ForegroundVisited=79, 216, 232
+

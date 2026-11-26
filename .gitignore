@@ -1,3 +1,8 @@
 out/
-build.log
-repo/*.pkg.tar.zst
+work/
+build/
+repo/
+privado/
+*.pkg.tar.*
+packages/*/src/
+packages/*/pkg/

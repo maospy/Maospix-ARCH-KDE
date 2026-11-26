@@ -1,0 +1,15 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Id": "org.maospix.desktop",
+        "Name": "Maospix",
+        "Description": "Identidad MAOSPIX, estilo derivado de Garuda Mokka",
+        "License": "GPL-3.0",
+        "Authors": [
+            {
+                "Name": "MAOSPIX, Garuda Linux"
+            }
+        ]
+    },
+    "X-Plasma-APIVersion": "2"
+}

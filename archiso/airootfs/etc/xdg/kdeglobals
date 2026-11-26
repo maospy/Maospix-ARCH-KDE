@@ -1,7 +1,0 @@
-[KDE]
-LookAndFeelPackage=org.maospix.dark
-
-[General]
-BrowserApplication=brave-browser
-TerminalApplication=maospix-terminal
-TerminalService=maospix-terminal.desktop

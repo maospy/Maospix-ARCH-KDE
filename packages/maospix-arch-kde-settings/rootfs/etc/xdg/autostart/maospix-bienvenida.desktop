@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Bienvenida Maospix
+Exec=maospix-bienvenida --inicio
+Icon=maospix
+OnlyShowIn=KDE;

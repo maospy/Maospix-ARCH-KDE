@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! getent group liveuser >/dev/null; then
+    groupadd --gid 1000 liveuser
+fi
+
+if ! id liveuser >/dev/null 2>&1; then
+    useradd --uid 1000 --gid liveuser --groups wheel \
+        --create-home --skel /etc/skel --shell /usr/bin/fish liveuser
+fi
+
+passwd --delete liveuser >/dev/null
+install -d -o liveuser -g liveuser -m 0700 /home/liveuser
+# Solo en la live: instalador en el escritorio, marcado como confiable.
+install -d -m 0755 /home/liveuser/Desktop
+install -m 0755 /usr/local/share/applications/maospix-installer.desktop /home/liveuser/Desktop/
+# El live no bloquea la pantalla.
+printf '[Daemon]\nAutolock=false\nLockOnResume=false\n' > /home/liveuser/.config/kscreenlockerrc
+
+chown -R liveuser:liveuser /home/liveuser

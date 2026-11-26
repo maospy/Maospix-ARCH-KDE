@@ -1,0 +1,9 @@
+pkgname=maospix-arch-kde-theme
+pkgver=0.5.0
+pkgrel=1
+pkgdesc='Tema MAOSPIX para Plasma (estilo Garuda Mokka, paleta MAOSPIX)'
+arch=(any)
+url='https://github.com/maospy'
+license=('GPL-3.0-only' 'CC-BY-SA-4.0' 'MIT' 'OFL-1.1')
+depends=(plasma-desktop kvantum tela-circle-icon-theme-dracula inter-font ttf-jetbrains-mono-nerd plasma6-applets-panel-colorizer plasma6-applets-window-title)
+package() { cp -a "$startdir/rootfs/." "$pkgdir/"; }

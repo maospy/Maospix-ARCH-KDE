@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Controladores NVIDIA
+Comment=Detecta la placa e instala el controlador si es compatible
+Exec=maospix-nvidia
+Icon=video-display
+Categories=System;Settings;
+OnlyShowIn=KDE;

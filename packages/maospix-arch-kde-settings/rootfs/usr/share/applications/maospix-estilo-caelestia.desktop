@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Estilo Caelestia
+Comment=Barra, lanzador y tableros (más pesado)
+Exec=maospix-estilo caelestia
+Icon=maospix
+Categories=System;Settings;
+OnlyShowIn=KDE;

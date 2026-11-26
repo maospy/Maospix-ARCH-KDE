@@ -1,0 +1,7 @@
+[Unit]
+Description=Copia el fondo de KDE a Caelestia
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/maospix-estilo fondo espera

@@ -1,0 +1,7 @@
+[Unit]
+Description=Avisa a Caelestia cuando KDE cambia el fondo
+PartOf=caelestia-shell.service
+
+[Path]
+PathChanged=%h/.config/plasma-org.kde.plasma.desktop-appletsrc
+Unit=maospix-fondo.service

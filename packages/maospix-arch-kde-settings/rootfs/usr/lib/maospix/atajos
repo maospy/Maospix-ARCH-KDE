@@ -1,0 +1,47 @@
+#!/usr/bin/python3 -I
+"""Guarda y devuelve los atajos globales de KDE. Uso: atajos guardar|devolver ARCHIVO
+Caelestia toma Super+1..9, Alt+Tab y otros, y al cerrarse no los devuelve."""
+import json, os, subprocess, sys
+
+
+def bus(ruta, interfaz, metodo, *args):
+    r = subprocess.run(["busctl", "--user", "--json=short", "--timeout=5", "call", "org.kde.kglobalaccel", ruta, interfaz, metodo, *args],
+                       capture_output=True, text=True, timeout=10)
+    if r.returncode:
+        raise RuntimeError(r.stderr.strip())
+    return json.loads(r.stdout)["data"] if r.stdout.strip() else []
+
+
+def leer():
+    d = {}
+    for ruta in bus("/kglobalaccel", "org.kde.KGlobalAccel", "allComponents")[0]:
+        for i in bus(ruta, "org.kde.kglobalaccel.Component", "allShortcutInfos")[0]:
+            accion, comp, teclas = i[0], i[2], [k for k in i[6] if k]
+            if "caelestia" not in comp:
+                d[f"{comp}\t{accion}"] = [i[3], i[1], teclas]
+    return d
+
+
+orden, archivo = sys.argv[1:3]
+if orden == "guardar":
+    d = leer()
+    if not d:
+        sys.exit("sin atajos")
+    with open(archivo + ".nuevo", "w") as f:
+        json.dump(d, f)
+    os.replace(archivo + ".nuevo", archivo)
+elif orden == "devolver":
+    antes, ahora, mal = json.load(open(archivo)), leer(), []
+    cambios = [k for k in antes if k in ahora and sorted(antes[k][2]) != sorted(ahora[k][2])]
+    # primero soltar los que sobran, después poner los que faltan
+    for k in sorted(cambios, key=lambda k: len(antes[k][2]) > 0):
+        comp, accion = k.split("\t", 1)
+        t = antes[k][2]
+        try:
+            bus("/kglobalaccel", "org.kde.KGlobalAccel", "setForeignShortcut", "asai", "4", comp, accion, antes[k][0], antes[k][1], str(len(t)), *map(str, t))
+        except Exception as e:
+            mal.append(f"{k}: {e}")
+    final = leer()
+    quedan = [k.replace("\t", " / ") for k in cambios if sorted(final.get(k, ["", "", []])[2]) != sorted(antes[k][2])]
+    print(f"cambiados {len(cambios)}, pendientes {len(quedan)}", *quedan, *mal, sep="\n")
+    sys.exit(bool(quedan))

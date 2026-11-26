@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Abre Calamares desde la sesión live de Plasma.
+# pkexec pierde el entorno Wayland (v1, prueba 10): se usa sudo -E, permitido a
+# liveuser sin contraseña en la live. Registro en ~/.local/state/maospix-arch-kde/.
+set -u
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/maospix-arch-kde"
+log_file="$state_dir/calamares-debug.log"
+mkdir -p "$state_dir"
+
+# Un doble clic lanza dos veces este script: solo sigue el primero.
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/maospix-installer.lock"
+flock -n 9 || exit 0
+
+if pgrep -x calamares >/dev/null 2>&1; then
+    notify-send "Instalador MAOSPIX" "El instalador ya está abierto." 2>/dev/null || true
+    exit 0
+fi
+
+# Tema oscuro para Calamares (corre como root): copia la paleta de liveuser a
+# un directorio de configuración propio, sin escribir en /root ni en ~liveuser.
+theme_dir="$(mktemp -d /tmp/maospix-installer.XXXXXX)"
+[[ -f "$HOME/.config/kdeglobals" ]] && cp "$HOME/.config/kdeglobals" "$theme_dir/"
+
+{
+    printf '\n=== Calamares %s ===\n' "$(date --iso-8601=seconds)"
+    printf 'wayland=%s display=%s runtime=%s\n' \
+        "${WAYLAND_DISPLAY:-no}" "${DISPLAY:-no}" "${XDG_RUNTIME_DIR:-no}"
+} >>"$log_file"
+
+platform="xcb"
+[[ -n "${WAYLAND_DISPLAY:-}" ]] && platform="wayland;xcb"
+
+sudo -E env \
+    XDG_CONFIG_HOME="$theme_dir" \
+    QT_QPA_PLATFORM="$platform" \
+    QT_QPA_PLATFORMTHEME=kde \
+    QT_STYLE_OVERRIDE=Breeze \
+    /usr/bin/calamares -D 6 9>&- >>"$log_file" 2>&1
+status=$?
+
+if (( status != 0 && status != 87 )); then
+    printf 'Calamares terminó con código %s\n' "$status" >>"$log_file"
+    notify-send -u critical "No se pudo abrir el instalador" \
+        "Revisá $log_file" 2>/dev/null || true
+fi
+exit "$status"

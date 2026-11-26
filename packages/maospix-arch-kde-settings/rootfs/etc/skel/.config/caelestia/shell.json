@@ -1,0 +1,164 @@
+{
+  "bar": {
+    "position": "left",
+    "islands": true,
+    "entries": [
+      {
+        "id": "logo",
+        "enabled": true,
+        "zone": "left"
+      },
+      {
+        "id": "workspaces",
+        "enabled": true,
+        "zone": "left"
+      },
+      {
+        "id": "appmenu",
+        "enabled": false,
+        "zone": "left"
+      },
+      {
+        "id": "greeter",
+        "enabled": false,
+        "zone": "left"
+      },
+      {
+        "id": "dock",
+        "enabled": true,
+        "zone": "middle"
+      },
+      {
+        "id": "tray",
+        "enabled": true,
+        "zone": "right"
+      },
+      {
+        "id": "updateIndicator",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "github",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "media",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "clock",
+        "enabled": true,
+        "zone": "right"
+      },
+      {
+        "id": "statusIcons",
+        "enabled": true,
+        "zone": "right"
+      },
+      {
+        "id": "kbLayoutIndicator",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "notificationsIndicator",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "perfCpu",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "perfMemory",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "perfStorage",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "perfNetwork",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "perfGpu",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "perfBattery",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "power",
+        "enabled": true,
+        "zone": "right"
+      },
+      {
+        "id": "notes",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "performance",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "weather",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "shortcuts",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "screencapture",
+        "enabled": false,
+        "zone": "right"
+      },
+      {
+        "id": "keepawake",
+        "enabled": false,
+        "zone": "right"
+      }
+    ]
+  },
+  "dock": {
+    "enabled": false,
+    "pinnedApps": [
+      "org.kde.dolphin",
+      "brave-browser",
+      "kitty"
+    ]
+  },
+  "services": {
+    "useTwelveHourClock": false,
+    "smartScheme": false
+  },
+  "background": {
+    "wallpaperFillMode": 2,
+    "materialYouIconsEnabled": false,
+    "wallpaperEngine": "skwd/plasma",
+    "wallpaperEnabled": false,
+    "desktopIconsEnabled": false
+  },
+  "general": {
+    "apps": {
+      "terminal": [
+        "kitty"
+      ]
+    }
+  }
+}

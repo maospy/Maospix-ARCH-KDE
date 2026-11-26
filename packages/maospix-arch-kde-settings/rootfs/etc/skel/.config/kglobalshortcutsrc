@@ -1,0 +1,50 @@
+[kwin]
+KrohnkiteFocusLeft=Meta+Left,Meta+H,Krohnkite: Focus Left
+KrohnkiteFocusRight=Meta+Right,Meta+L,Krohnkite: Focus Right
+KrohnkiteFocusUp=Meta+Up,Meta+K,Krohnkite: Focus Up
+KrohnkiteFocusDown=Meta+Down,Meta+J,Krohnkite: Focus Down
+KrohnkiteShiftLeft=Meta+Shift+Left,Meta+Shift+H,Krohnkite: Move Left
+KrohnkiteShiftRight=Meta+Shift+Right,Meta+Shift+L,Krohnkite: Move Right
+KrohnkiteShiftUp=Meta+Shift+Up,Meta+Shift+K,Krohnkite: Move Up/Prev
+KrohnkiteShiftDown=Meta+Shift+Down,Meta+Shift+J,Krohnkite: Move Down/Next
+KrohnkitegrowWidth=Meta+Ctrl+Right,Meta+Ctrl+L,Krohnkite: Grow Width
+KrohnkiteShrinkWidth=Meta+Ctrl+Left,Meta+Ctrl+H,Krohnkite: Shrink Width
+KrohnkiteGrowHeight=Meta+Ctrl+Down,Meta+Ctrl+J,Krohnkite: Grow Height
+KrohnkiteShrinkHeight=Meta+Ctrl+Up,Meta+Ctrl+K,Krohnkite: Shrink Height
+KrohnkiteNextLayout=Meta+Y,none,Krohnkite: Next Layout
+KrohnkiteToggleFloat=Meta+G,Meta+F,Krohnkite: Toggle Float
+KrohnkiteRotate=Meta+O,Meta+R,Krohnkite: Rotate
+KrohnkiteLayoutChooser=Meta+Shift+Y,none,Krohnkite: Layout Chooser
+KrohnkiteSetMaster=Meta+Return,Meta+Return,Krohnkite: Set master
+KrohnkiteTileLayout=none,Meta+T,Krohnkite: Select Layout - Tile
+KrohnkiteMonocleLayout=none,Meta+M,Krohnkite: Select Layout - Monocle
+KrohnkiteDecrease=none,Meta+D,Krohnkite: Decrease
+KrohnkiteFloatAll=none,Meta+Shift+F,Krohnkite: Toggle Float All
+Window Close=Meta+Q\tAlt+F4,Alt+F4,Close Window
+Window Maximize=Meta+M\tMeta+PgUp,Meta+PgUp,Maximize Window
+Edit Tiles=none,Meta+T,Toggle Tiles Editor
+Grid View=none,Meta+G,Toggle Grid View
+Window Quick Tile Left=none,Meta+Left,Quick Tile Window to the Left
+Window Quick Tile Right=none,Meta+Right,Quick Tile Window to the Right
+Window Quick Tile Top=none,Meta+Up,Quick Tile Window to the Top
+Window Quick Tile Bottom=none,Meta+Down,Quick Tile Window to the Bottom
+Switch to Desktop 1=Meta+1,Ctrl+F1,Switch to Desktop 1
+Switch to Desktop 2=Meta+2,Ctrl+F2,Switch to Desktop 2
+Switch to Desktop 3=Meta+3,Ctrl+F3,Switch to Desktop 3
+Switch to Desktop 4=Meta+4,Ctrl+F4,Switch to Desktop 4
+Window to Desktop 1=Meta+Shift+1,none,Window to Desktop 1
+Window to Desktop 2=Meta+Shift+2,none,Window to Desktop 2
+Window to Desktop 3=Meta+Shift+3,none,Window to Desktop 3
+Window to Desktop 4=Meta+Shift+4,none,Window to Desktop 4
+Window to Next Screen=none,Meta+Shift+Right,Move Window to Next Screen
+Window to Previous Screen=none,Meta+Shift+Left,Move Window to Previous Screen
+
+[plasmashell]
+manage activities=none,Meta+Q,Show Activity Switcher
+activate task manager entry 1=none,Meta+1,Activate Task Manager Entry 1
+activate task manager entry 2=none,Meta+2,Activate Task Manager Entry 2
+activate task manager entry 3=none,Meta+3,Activate Task Manager Entry 3
+activate task manager entry 4=none,Meta+4,Activate Task Manager Entry 4
+
+[services][kitty.desktop]
+_launch=Meta+T

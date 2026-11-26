@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Instalar Maospix-ARCH-KDE
+GenericName=Instalador del sistema
+Comment=Instalar Maospix-ARCH-KDE en el disco
+Exec=/usr/local/bin/maospix-installer
+Icon=/etc/calamares/branding/maospix-arch-kde/icon.png
+Terminal=false
+Categories=System;
+Keywords=instalar;install;calamares;maospix;
+StartupWMClass=calamares

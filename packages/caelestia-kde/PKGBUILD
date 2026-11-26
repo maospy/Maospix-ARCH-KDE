@@ -1,0 +1,146 @@
+# MAOSPIX: receta oficial sin su tema SDDM ni la regla uinput.
+# Maintainer: ladybug-me <rajveer2027singh@gmail.com>
+
+pkgname=caelestia-kde
+pkgver=2.7.6
+pkgrel=2
+pkgdesc='The Caelestia desktop shell, ported to KDE Plasma'
+arch=('x86_64' 'aarch64')
+url='https://github.com/caelestia-kde/caelestia'
+license=('GPL-3.0-or-later')
+depends=(
+    'bash'
+    'quickshell'
+    'matugen'
+    'python'
+    'git'
+    'plasma-workspace'
+    'qt6-base'
+    'qt6-declarative'
+    'qt6-multimedia'
+    'qt6-5compat'
+    'qt6-imageformats'
+    'qt6-svg'
+    'qt6-wayland'
+    'kwindowsystem'
+    'kguiaddons'
+    'networkmanager-qt'
+    'pulseaudio-qt'
+    'kglobalaccel'
+    'kconfig'
+    'kcoreaddons'
+    'libqalculate'
+    'libpipewire'
+    'aubio'
+    'libcava'
+    'cava'
+    'protobuf'
+    'openssl'
+    'avahi'
+    'libx11'
+    'wayland'
+    'ddcutil'
+    'brightnessctl'
+    'networkmanager'
+    'power-profiles-daemon'
+    'ttf-material-symbols-variable'
+)
+makedepends=('cmake' 'ninja' 'qt6-shadertools' 'extra-cmake-modules' 'kwin' 'vulkan-headers')
+optdepends=(
+    'ttf-rubik-vf: clock and workspace font'
+    'ttf-cascadia-code-nerd: monospace font'
+    'konsole: the terminal scheme is written into it and its profiles follow it'
+    'spectacle: screenshots'
+    'swappy: screenshot editing'
+    'gpu-screen-recorder: screen recording'
+    'howdy: face unlock'
+    'fprintd: fingerprint unlock'
+    'asdbctl: Apple Studio Display brightness'
+)
+provides=('caelestia-shell')
+conflicts=('caelestia-shell' 'caelestia-shell-git')
+
+_source_url="${_source_url:-$url/releases/download/v$pkgver/$pkgname-v$pkgver.tar.gz}"
+_source_sum="71bafd563ab3ab28b2d9de872656f9d64878f811ae2a059bf6ca3031ec9c084c"
+_build_dir="build"
+_effect_build_dir="effect-build"
+
+source=("$_source_url"
+        'caelestia-autostart'
+        'caelestia-shell.service')
+sha256sums=("$_source_sum"
+            '378569eb38a781d827570afdd08a8452dfcf36caabd373642080482918c151c6'
+            'f46f627c047dc846152c6c7eac14f6ae8fd04d3441378b3b29f216b068cad971')
+
+prepare() {
+    cd "$srcdir/$pkgname-$pkgver"
+
+    # Maospix: escribir path.txt de una vez; leerlo vacío hacía volver al fondo por defecto.
+    local c; c="$(grep -rlF 'printf '"'%s'"' "$wallpaper" > "$WALLPAPER_FILE"' --include='caelestia-color*' . | head -1)"
+    [[ -n "$c" ]] || { echo "caelestia-color cambió: revisar el parche del fondo" >&2; return 1; }
+    sed -i '/printf .%s. "$wallpaper" > "$WALLPAPER_FILE"$/s|> "$WALLPAPER_FILE"|> "$WALLPAPER_FILE.tmp" \&\& mv -f "$WALLPAPER_FILE.tmp" "$WALLPAPER_FILE"|' "$c"
+    grep -qF 'mv -f "$WALLPAPER_FILE.tmp" "$WALLPAPER_FILE"' "$c" || return 1
+
+    if [[ "$_source_sum" == "SKIP" && "${CAELESTIA_ALLOW_UNVERIFIED_SOURCE:-0}" != "1" ]]; then
+        echo "No source checksum: put the release's sha256 in the first sha256sums entry." >&2
+        echo "The release job prints it beside the size and attaches it as .sha256;" >&2
+        echo "set CAELESTIA_ALLOW_UNVERIFIED_SOURCE=1 to build anyway." >&2
+        return 1
+    fi
+
+    local sub
+    for sub in src/dots src/yet-another-monochrome-icon-set; do
+        if [[ -z "$(ls -A "$sub" 2>/dev/null)" ]]; then
+            echo "submodule $sub is empty in the source tarball" >&2
+            return 1
+        fi
+    done
+}
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+    cmake -B "$_build_dir" -S shell -G Ninja \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+        -DCMAKE_INSTALL_PREFIX=/ \
+        -DVERSION="$pkgver" \
+        -DINSTALL_DATADIR=usr/share/caelestia \
+        -DCAELESTIA_PACKAGE=ON \
+        -DREQUIRE_CAVA=ON \
+        -DDISTRIBUTOR="AUR (package: $pkgname)"
+    cmake --build "$_build_dir" || exit 1
+
+    cmake -B "$_effect_build_dir" -S shell/kwin-effects/workspace-tracker -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr
+    cmake --build "$_effect_build_dir" || exit 1
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver"
+    DESTDIR="$pkgdir" cmake --install "$_build_dir"
+    DESTDIR="$pkgdir" cmake --install "$_effect_build_dir"
+
+    install -Dm755 "$srcdir/caelestia-autostart" "$pkgdir/usr/bin/caelestia-autostart"
+    install -Dm644 "$srcdir/caelestia-shell.service" \
+        "$pkgdir/usr/lib/systemd/user/caelestia-shell.service"
+
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+    local required=(
+        usr/lib/systemd/user/caelestia-shell.service
+        usr/share/licenses/$pkgname/LICENSE
+    )
+    local path
+    for path in "${required[@]}"; do
+        if [[ ! -e "$pkgdir/$path" ]]; then
+            echo "missing from the package: $path" >&2
+            exit 1
+        fi
+    done
+
+    source "$srcdir/$pkgname-$pkgver/scripts/lib/install-fs.sh"
+    validate_install_manifest "$srcdir/$pkgname-$pkgver/$_build_dir/install_manifest.txt" "$pkgdir" || exit 1
+    validate_install_manifest "$srcdir/$pkgname-$pkgver/$_effect_build_dir/install_manifest.txt" "$pkgdir" || exit 1
+
+    echo "package layout checked: ${#required[@]} package paths plus CMake's manifest"
+}
